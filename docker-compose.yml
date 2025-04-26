@@ -8,6 +8,8 @@ services:
       - /app/vendor
     command: >
       sh -c "
+        composer dump-autoload --ignore-platform-reqs && \
+        cp .env.example .env && \
         php artisan serve --host 0.0.0.0
       "
     ports:
