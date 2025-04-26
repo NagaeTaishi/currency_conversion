@@ -13,6 +13,13 @@ class GetRateRequest extends FormRequest
 
     public function rules(): array
     {
-        return [];
+        return [
+            'amount' => [
+                'required',
+                'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                'gte:0',
+            ],
+        ];
     }
 }
