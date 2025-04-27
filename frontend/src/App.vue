@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
-    <h1>Convert</h1>
-
+    <h2>Currency Conversion</h2>
     <div class="input-area">
       <div class="input-wrapper">
         <span class="currency-symbol">$</span>
@@ -99,6 +98,12 @@ watch(amount, fetchRates)
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .input-area {
