@@ -3,13 +3,16 @@
     <h1>Convert</h1>
 
     <div class="input-area">
+      <div class="input-wrapper">
+        <span class="currency-symbol">$</span>
+        <input
+          type="number"
+          v-model="amount"
+          @input="handleInput"
+          class="amount-input"
+        />
+      </div>
       <div class="currency-label">USD</div>
-      <input
-        type="number"
-        v-model="amount"
-        @input="handleInput"
-        class="amount-input"
-      />
     </div>
 
     <div class="rate-list">
@@ -96,21 +99,48 @@ watch(amount, fetchRates)
 
 .input-area {
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .currency-label {
-  background: #eee;
-  padding: 8px 12px;
-  border-radius: 4px;
   font-weight: bold;
+  flex-shrink: 0;
+  text-align: left;
+  min-width: 36px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.currency-symbol {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
 }
 
 .amount-input {
-  flex: 1;
   padding: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: right;
+  color: #333;
+  background-color: transparent;
+  width: auto;
+  min-width: 4ch;
+  max-width: 120px;
 }
 
 .rate-list {
@@ -123,6 +153,7 @@ watch(amount, fetchRates)
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .rate-info {
@@ -134,5 +165,6 @@ watch(amount, fetchRates)
 .rate-description {
   font-size: 0.8rem;
   color: #777;
+  text-align: right;
 }
 </style>
