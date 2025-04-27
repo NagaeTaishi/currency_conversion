@@ -1,4 +1,20 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: ./.docker/api/Dockerfile
+    volumes:
+      - ./:/app:cached
+      - /app/vendor
+    command: >
+      sh -c "
+        composer dump-autoload --ignore-platform-reqs && \
+        cp .env.example .env && \
+        php artisan serve --host 0.0.0.0
+      "
+    ports:
+      - 8000:8000
+
   frontend:
     build:
       context: .
