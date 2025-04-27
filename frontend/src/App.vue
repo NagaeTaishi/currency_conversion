@@ -50,17 +50,17 @@ const rates = ref([
 ])
 
 let timeoutId = null
+const API_URL = 'https://openexchangerates.org/api/latest.json'
+const APP_ID = import.meta.env.VITE_OPENEXCHANGE_KEY
 
 async function fetchRates() {
   try {
-    const data = {
-      AUD: 1.5,
-      CAD: 1.3,
-      JPY: 0.9,
-      GBP: 0.8,
-      NZD: 1.6,
+    const response = await axios.get(API_URL + `?app_id=${APP_ID}`)
+    if (response.status !== 200) {
+      throw new Error()
     }
 
+    const data = response.data.rates
     rates.value = rates.value.map((rate) => ({
       ...rate,
       rate: data[rate.code],
