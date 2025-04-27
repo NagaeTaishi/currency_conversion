@@ -7,6 +7,7 @@
       <input
         type="number"
         v-model="amount"
+        @input="handleInput"
         class="amount-input"
       />
     </div>
@@ -19,7 +20,7 @@
       >
         <div class="rate-info">
           <span>{{ rate.code }}</span>
-          <span>{{ rate.loading ? 'Loading...' : rate.symbol + rate.convertedAmount }}</span>
+          <span>{{ rate.loading ? 'Loading...' : rate.symbol + formatAmount(rate.convertedAmount)}}</span>
         </div>
         <div class="rate-description">
           1 USD = {{ rate.loading ? 'Loading...' : rate.rate }} {{ rate.code }}
@@ -30,19 +31,69 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import axios from 'axios'
 
 const amount = ref(100)
 const rates = ref([
-  { code: 'AUD', symbol: '$', rate: 0, convertedAmount: 0, loading: true },
-  { code: 'CAD', symbol: '$', rate: 0, convertedAmount: 0, loading: true },
-  { code: 'EUR', symbol: '€', rate: 0, convertedAmount: 0, loading: true },
-  { code: 'GBP', symbol: '£', rate: 0, convertedAmount: 0, loading: true },
-  { code: 'NZD', symbol: '$', rate: 0, convertedAmount: 0, loading: true },
+  { code: 'AUD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
+  { code: 'CAD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
+  { code: 'EUR', symbol: '€', rate: 0, convertedAmount: 0, loading: true, },
+  { code: 'GBP', symbol: '£', rate: 0, convertedAmount: 0, loading: true, },
+  { code: 'NZD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
 ])
+
+let timeoutId = null
+
+async function fetchRates() {
+  try {
+    const data = {
+      AUD: 1.5,
+      CAD: 1.3,
+      EUR: 0.9,
+      GBP: 0.8,
+      NZD: 1.6,
+    }
+
+    rates.value = rates.value.map((rate) => ({
+      ...rate,
+      rate: data[rate.code],
+      convertedAmount: amount.value * data[rate.code],
+      loading: false,
+    }))
+    
+  } catch (error) {
+    console.error('Failed to fetch rates:', error)
+  }
+}
+
+function handleInput() {
+  clearTimeout(timeoutId)
+  timeoutId = setTimeout(() => {
+    rates.value = rates.value.map(rate => ({
+      ...rate,
+      loading: true,
+    }))
+    fetchRates()
+  }, 500)
+}
+
+function formatAmount(value) {
+  return `${value.toFixed(2)}`
+}
+
+fetchRates()
+
+watch(amount, fetchRates)
 </script>
 
 <style scoped>
+.app-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 .input-area {
   display: flex;
   align-items: center;
