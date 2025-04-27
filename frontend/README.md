@@ -27,3 +27,9 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Testing
+
+```sh
+docker compose exec frontend sh npm run test:unit
+```
