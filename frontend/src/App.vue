@@ -13,6 +13,7 @@
         />
       </div>
       <div class="currency-label">USD</div>
+      <img :src="`/flags/USD.png`" alt="flag" class="flag-img" />
     </div>
 
     <div class="rate-list">
@@ -22,8 +23,11 @@
         class="rate-item"
       >
         <div class="rate-info">
-          <span>{{ rate.code }}</span>
-          <span>{{ rate.loading ? 'Loading...' : rate.symbol + formatAmount(rate.convertedAmount)}}</span>
+          <img :src="`/flags/${rate.code}.png`" alt="flag" class="flag-img" />
+          <span class="rate-code">{{ rate.code }}</span>
+          <span class="rate-amount">
+            {{ rate.loading ? 'Loading...' : rate.symbol + formatAmount(rate.convertedAmount) }}
+          </span>
         </div>
         <div class="rate-description">
           1 USD = {{ rate.loading ? 'Loading...' : rate.rate }} {{ rate.code }}
@@ -41,7 +45,7 @@ const amount = ref(100)
 const rates = ref([
   { code: 'AUD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
   { code: 'CAD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
-  { code: 'EUR', symbol: '€', rate: 0, convertedAmount: 0, loading: true, },
+  { code: 'JPY', symbol: '¥', rate: 0, convertedAmount: 0, loading: true, },
   { code: 'GBP', symbol: '£', rate: 0, convertedAmount: 0, loading: true, },
   { code: 'NZD', symbol: '$', rate: 0, convertedAmount: 0, loading: true, },
 ])
@@ -53,7 +57,7 @@ async function fetchRates() {
     const data = {
       AUD: 1.5,
       CAD: 1.3,
-      EUR: 0.9,
+      JPY: 0.9,
       GBP: 0.8,
       NZD: 1.6,
     }
@@ -133,38 +137,57 @@ watch(amount, fetchRates)
   padding: 8px;
   border: none;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   text-align: right;
   color: #333;
   background-color: transparent;
   width: auto;
-  min-width: 4ch;
-  max-width: 120px;
+  max-width: 90px;
 }
 
 .rate-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .rate-item {
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  border-radius: 12px;
+  background-color: #fff;
 }
 
 .rate-info {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+
+.flag-img {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.rate-code {
   font-weight: bold;
+  font-size: 1rem;
+  margin-right: auto;
+}
+
+.rate-amount {
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 .rate-description {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #777;
   text-align: right;
+  margin-top: 4px;
 }
 </style>
