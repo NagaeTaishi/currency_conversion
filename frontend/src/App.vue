@@ -33,6 +33,14 @@
         </div>
       </div>
     </div>
+
+    <div v-if="showErrorModal" class="modal-overlay">
+      <div class="modal">
+        <h3>Error</h3>
+        <p>{{ errorMessage }}</p>
+        <button @click="closeModal">Close</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +61,13 @@ let timeoutId = null
 const API_URL = 'https://openexchangerates.org/api/latest.json'
 const APP_ID = import.meta.env.VITE_OPENEXCHANGE_KEY
 
+const showErrorModal = ref(false)
+const errorMessage = ref('')
+
+function closeModal() {
+  showErrorModal.value = false
+}
+
 async function fetchRates() {
   try {
     const response = await axios.get(API_URL + `?app_id=${APP_ID}`)
@@ -67,9 +82,9 @@ async function fetchRates() {
       convertedAmount: amount.value * data[rate.code],
       loading: false,
     }))
-    
   } catch (error) {
-    console.error('Failed to fetch rates:', error)
+    errorMessage.value = 'Failed to fetch rates'
+    showErrorModal.value = true
   }
 }
 
@@ -196,5 +211,47 @@ h2 {
   color: #777;
   text-align: right;
   margin-top: 4px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal h3 {
+  margin-bottom: 10px;
+}
+
+.modal p {
+  margin-bottom: 20px;
+}
+
+.modal button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #0056b3;
 }
 </style>
