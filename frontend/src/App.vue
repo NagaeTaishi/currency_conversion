@@ -111,11 +111,12 @@ h2 {
   flex-direction: row-reverse;
   align-items: center;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .currency-label {
@@ -161,7 +162,8 @@ h2 {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .rate-info {
